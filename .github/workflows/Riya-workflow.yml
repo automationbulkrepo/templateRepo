@@ -1,0 +1,24 @@
+name: CustomActionGetWorkflow
+on: 
+  workflow_dispatch:
+
+ 
+
+jobs:
+  changeApproval:
+    name: SNOW Change
+    runs-on: ubuntu-latest
+    steps:     
+      - name: ServiceNow DevOps Change Automation
+        uses: ServiceNow/servicenow-devops-change@main
+        id: create
+        with:
+          devops-integration-user-name: ${{ secrets.SN_DEVOPS_USER }}
+          devops-integration-user-password: ${{ secrets.SN_DEVOPS_PASSWORD }}
+          instance-url: ${{ secrets.SN_INSTANCE_URL }}
+          tool-id: ${{ secrets.SN_ORCHESTRATION_TOOL_ID }}
+          context-github: ${{ toJSON(github) }}
+          job-name: 'SNOW Change'
+          change-request: '{ "attributes": {"type":"standard", "template": "1c8e02ec47410200e90d87e8dee49057"}}'
+          interval: '100'
+          timeout: '3600'
